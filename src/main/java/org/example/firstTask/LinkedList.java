@@ -1,4 +1,4 @@
-package org.example;
+package org.example.firstTask;
 
 public class LinkedList<T>{
     private class Node {

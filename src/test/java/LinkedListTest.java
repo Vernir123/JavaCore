@@ -1,4 +1,4 @@
-import org.example.LinkedList;
+import org.example.firstTask.LinkedList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
