@@ -1,12 +1,10 @@
 import org.example.secondTask.OrderMetrics;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -72,8 +70,6 @@ public class OrderMetricsTest {
         Constructor<?> orderItemConstructor = orderItemClass.getDeclaredConstructor();
         orderItemConstructor.setAccessible(true);
         Object orderItem = orderItemConstructor.newInstance();
-
-        Class<?> categoryEnum = Class.forName("org.example.secondTask.Category");
 
         Field productNameField = orderItemClass.getDeclaredField("productName");
         productNameField.setAccessible(true);

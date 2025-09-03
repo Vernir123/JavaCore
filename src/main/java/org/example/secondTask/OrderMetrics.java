@@ -7,11 +7,9 @@ package org.example.secondTask;
 //Customers who have more than 5 orders
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class OrderMetrics {
 
@@ -109,7 +107,7 @@ public class OrderMetrics {
                     }
                 }).sum();
 
-        return (double) OrderMetrics.getTotalIncome(orders)/deliveredOrders;
+        return OrderMetrics.getTotalIncome(orders)/deliveredOrders;
     }
 
     public static List<String> getActiveCustomers(List<Object> orders) {
