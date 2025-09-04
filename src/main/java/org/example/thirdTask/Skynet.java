@@ -14,7 +14,7 @@ public class Skynet {
         Faction wednesday = new Faction("Wednesday");
         Faction world = new Faction("World");
 
-        Thread factoryThread = new Thread(FactoryObject::run, "FactoryThread");
+        Thread factoryThread = new Thread(Factory::run, "FactoryThread");
         Thread factionThread1 = new Thread( wednesday, "WednesdayFaction");
         Thread factionThread2 = new Thread( world, "WorldFaction");
 

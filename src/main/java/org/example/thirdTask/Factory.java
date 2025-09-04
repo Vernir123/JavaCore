@@ -3,18 +3,20 @@ package org.example.thirdTask;
 import java.util.EnumMap;
 import java.util.Random;
 
-public class FactoryObject {
+public class Factory {
 
     private static final EnumMap<RobotParts, Integer> partsManufactured =new EnumMap<>(RobotParts.class);
     private static final Random rand             = new Random();
     private static final int    MAX_MANUFACTURED = 10;
 
+    //initializing EnumMap
     static{
         for (RobotParts type : RobotParts.values()) {
             partsManufactured.put(type, 0);
         }
         System.out.println("Factory is working!");
     }
+
 
     public static void run(){
         while(Skynet.day < Skynet.DAY_LIMIT) {
@@ -49,16 +51,18 @@ public class FactoryObject {
         }
     }
 
+        // method creating random parts based on RobotParts enum
     private static synchronized void producePart(){
         int partRand = rand.nextInt(RobotParts.values().length);
         RobotParts part = RobotParts.values()[partRand];
         partsManufactured.put(part, partsManufactured.get(part)+1);
     }
+    // method for checking availability of parts in factory
     public static synchronized boolean isEmpty() {
         return partsManufactured.entrySet().stream().allMatch(e -> e.getValue() == 0);
     }
 
-
+    // method for subtract parts from factory inventory and return its type
     public static synchronized RobotParts capturePart() {
         if (isEmpty()) return null;
         RobotParts type;

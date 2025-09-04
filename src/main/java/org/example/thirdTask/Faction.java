@@ -10,6 +10,7 @@ public class Faction implements Runnable {
     private       int    robots         = 0;
     private final String name;
 
+    // constructor for setting faction name and initializing EnumMap
     public Faction(String name) {
         this.name = name;
         init();
@@ -22,6 +23,7 @@ public class Faction implements Runnable {
         System.out.println(name+" Faction is initialized!");
     }
 
+    // method for retrieving amount of robots
     public int getRobotsAmount(){
         return robots;
     }
@@ -39,8 +41,8 @@ public class Faction implements Runnable {
                 }
             }}
 
-            while (partsCollected<5 && !FactoryObject.isEmpty()) {
-                RobotParts partTaken = FactoryObject.capturePart();
+            while (partsCollected<5 && !Factory.isEmpty()) {
+                RobotParts partTaken = Factory.capturePart();
                 if (partTaken != null) {
                     partsInventory.put(partTaken, partsInventory.get(partTaken) + 1);
                     partsCollected++;
@@ -70,6 +72,7 @@ public class Faction implements Runnable {
         }
     }
 
+        // loop for creating robots from all available parts packs (1 of each part)
     private synchronized void createRobot(){
         while(partsInventory.entrySet().stream().allMatch(entry -> entry.getValue() >= 1)){
             partsInventory.entrySet().forEach(entry -> entry.setValue(entry.getValue() - 1));
