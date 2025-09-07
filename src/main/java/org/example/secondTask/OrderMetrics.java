@@ -14,108 +14,108 @@ import java.util.stream.Collectors;
 public class OrderMetrics {
 
   // get list of unique cities from order list
-  public static List < String > getUniqueCities ( List < Object > orders ) {
-    return orders.stream ( ).map ( order -> {
+  public static List <String> getUniqueCities (List <Object> orders) {
+    return orders.stream ().map (order -> {
       try {
-        Field f = Order.class.getDeclaredField ( "customer" );
-        f.setAccessible ( true );
-        Field c = Customer.class.getDeclaredField ( "city" );
-        c.setAccessible ( true );
-        Object customer = f.get ( order );
-        return (String) c.get ( customer );
+        Field f = Order.class.getDeclaredField ("customer");
+        f.setAccessible (true);
+        Field c = Customer.class.getDeclaredField ("city");
+        c.setAccessible (true);
+        Object customer = f.get (order);
+        return (String) c.get (customer);
       } catch (Exception e) {
-        throw new RuntimeException ( e );
+        throw new RuntimeException (e);
       }
-    } ).distinct ( ).toList ( );
+    }).distinct ().toList ();
   }
 
   //Get sum of completed (status: delivered) orders from list
-  public static double getTotalIncome ( List < Object > orders ) {
-    return orders.stream ( ).mapToDouble ( order -> {
+  public static double getTotalIncome (List <Object> orders) {
+    return orders.stream ().mapToDouble (order -> {
       try {
-        Field s = Order.class.getDeclaredField ( "status" );
-        s.setAccessible ( true );
-        Object status = s.get ( order );
-        if (status.toString ( ).equals ( "DELIVERED" )) {
-          Field i = Order.class.getDeclaredField ( "items" );
-          i.setAccessible ( true );
-          List < OrderItem > items = (List < OrderItem >) i.get ( order );
-          return items.stream ( ).mapToDouble ( item -> {
+        Field s = Order.class.getDeclaredField ("status");
+        s.setAccessible (true);
+        Object status = s.get (order);
+        if (status.toString ().equals ("DELIVERED")) {
+          Field i = Order.class.getDeclaredField ("items");
+          i.setAccessible (true);
+          List <OrderItem> items = (List <OrderItem>) i.get (order);
+          return items.stream ().mapToDouble (item -> {
             try {
-              Field p = OrderItem.class.getDeclaredField ( "price" );
-              p.setAccessible ( true );
-              Object price = p.get ( item );
+              Field p = OrderItem.class.getDeclaredField ("price");
+              p.setAccessible (true);
+              Object price = p.get (item);
               return (Double) price;
             } catch (Exception e) {
-              throw new RuntimeException ( e );
+              throw new RuntimeException (e);
             }
-          } ).sum ( );
+          }).sum ();
         }
         return 0;
       } catch (Exception e) {
-        throw new RuntimeException ( e );
+        throw new RuntimeException (e);
       }
-    } ).sum ( );
+    }).sum ();
   }
 
-  public static List < String > getPopularProduct ( List < Object > orders ) {
-    return orders.stream ( ).flatMap ( order -> {
+  public static List <String> getPopularProduct (List <Object> orders) {
+    return orders.stream ().flatMap (order -> {
           try {
-            Field i = Order.class.getDeclaredField ( "items" );
-            i.setAccessible ( true );
-            List < OrderItem > items = (List < OrderItem >) i.get ( order );
-            return items.stream ( ).map ( item -> {
+            Field i = Order.class.getDeclaredField ("items");
+            i.setAccessible (true);
+            List <OrderItem> items = (List <OrderItem>) i.get (order);
+            return items.stream ().map (item -> {
               try {
-                Field p = OrderItem.class.getDeclaredField ( "productName" );
-                p.setAccessible ( true );
-                return (String) p.get ( item );
+                Field p = OrderItem.class.getDeclaredField ("productName");
+                p.setAccessible (true);
+                return (String) p.get (item);
               } catch (Exception e) {
-                throw new RuntimeException ( e );
+                throw new RuntimeException (e);
               }
-            } );
+            });
           } catch (Exception e) {
-            throw new RuntimeException ( e );
+            throw new RuntimeException (e);
           }
-        } ).collect ( Collectors.groupingBy ( name -> name , Collectors.counting ( ) ) ).entrySet ( )
-        .stream ( ).sorted ( Map.Entry. < String, Long >comparingByValue ( ).reversed ( ) )
-        .map ( e -> e.getKey ( ) + " = " + e.getValue ( ) ).toList ( );
+        }).collect (Collectors.groupingBy (name -> name , Collectors.counting ())).entrySet ().stream ()
+        .sorted (Map.Entry. <String, Long>comparingByValue ().reversed ())
+        .map (e -> e.getKey () + " = " + e.getValue ()).toList ();
   }
 
-  public static Double getAverageCheck ( List < Object > orders ) {
-    int deliveredOrders = orders.stream ( ).mapToInt ( order -> {
+  public static Double getAverageCheck (List <Object> orders) {
+    int deliveredOrders = orders.stream ().mapToInt (order -> {
       try {
-        Field s = Order.class.getDeclaredField ( "status" );
-        s.setAccessible ( true );
-        Object status = s.get ( order );
-        if (status.toString ( ).equals ( "DELIVERED" )) {
-          Field i = Order.class.getDeclaredField ( "items" );
-          i.setAccessible ( true );
+        Field s = Order.class.getDeclaredField ("status");
+        s.setAccessible (true);
+        Object status = s.get (order);
+        if (status.toString ().equals ("DELIVERED")) {
+          Field i = Order.class.getDeclaredField ("items");
+          i.setAccessible (true);
           return 1;
         }
         return 0;
       } catch (Exception e) {
-        throw new RuntimeException ( e );
+        throw new RuntimeException (e);
       }
-    } ).sum ( );
+    }).sum ();
 
-    return OrderMetrics.getTotalIncome ( orders ) / deliveredOrders;
+    return OrderMetrics.getTotalIncome (orders) / deliveredOrders;
   }
 
-  public static List < String > getActiveCustomers ( List < Object > orders ) {
-    return orders.stream ( ).map ( order -> {
+  public static List <String> getActiveCustomers (List <Object> orders) {
+    return orders.stream ().map (order -> {
           try {
-            Field f = Order.class.getDeclaredField ( "customer" );
-            f.setAccessible ( true );
-            Field n = Customer.class.getDeclaredField ( "name" );
-            n.setAccessible ( true );
-            Object customer = f.get ( order );
-            return (String) n.get ( customer );
+            Field f = Order.class.getDeclaredField ("customer");
+            f.setAccessible (true);
+            Field n = Customer.class.getDeclaredField ("name");
+            n.setAccessible (true);
+            Object customer = f.get (order);
+            return (String) n.get (customer);
           } catch (Exception e) {
-            throw new RuntimeException ( e );
+            throw new RuntimeException (e);
           }
-        } ).collect ( Collectors.groupingBy ( name -> name , Collectors.counting ( ) ) ).entrySet ( )
-        .stream ( ).filter ( e -> e.getValue ( ) > 5 )
-        .sorted ( Map.Entry. < String, Long >comparingByValue ( ).reversed ( ) )
-        .map ( e -> e.getKey ( ) + " = " + e.getValue ( ) ).toList ( );
+        }).collect (Collectors.groupingBy (name -> name , Collectors.counting ())).entrySet ().stream ()
+        .filter (e -> e.getValue () > 5)
+        .sorted (Map.Entry. <String, Long>comparingByValue ().reversed ())
+        .map (e -> e.getKey () + " = " + e.getValue ()).toList ();
   }
 }

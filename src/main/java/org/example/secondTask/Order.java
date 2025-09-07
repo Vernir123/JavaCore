@@ -8,7 +8,7 @@ class Order {
   private String orderId;
   private LocalDateTime orderDate;
   private Customer customer;
-  private List < OrderItem > items;
+  private List <OrderItem> items;
   private OrderStatus status;
 }
 
