@@ -1,10 +1,11 @@
 package org.example;
 
-import org.example.thirdTask.Skynet;
+import org.example.thirdtask.Skynet;
 
 public class Main {
-    public static void main(String[] args) {
-        Skynet.startSimulation();
 
-    }
+  public static void main ( String[] args ) {
+    Skynet.startSimulation ( );
+
+  }
 }
