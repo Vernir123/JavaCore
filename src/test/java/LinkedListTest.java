@@ -9,12 +9,12 @@ public class LinkedListTest {
   private LinkedList < Integer > list;
 
   @BeforeEach
-  void setUp ( ) {
+  void setUp () {
     list = new LinkedList <> ( );
   }
 
   @Test
-  void testSize ( ) {
+  void testSize () {
     list.addLast ( 10 );
     list.addLast ( 20 );
     list.addLast ( 30 );
@@ -22,14 +22,14 @@ public class LinkedListTest {
   }
 
   @Test
-  void testAddFirst ( ) {
+  void testAddFirst () {
     list.addFirst ( 10 );
     assertEquals ( 1 , list.size ( ) );
     assertEquals ( 10 , list.getFirst ( ) );
   }
 
   @Test
-  void testAddLast ( ) {
+  void testAddLast () {
     list.addLast ( 20 );
     list.addLast ( null );
     assertEquals ( 2 , list.size ( ) );
@@ -37,7 +37,7 @@ public class LinkedListTest {
   }
 
   @Test
-  void testAddByIndex ( ) {
+  void testAddByIndex () {
     list.addFirst ( 10 );
     list.addLast ( 30 );
     list.add ( 1 , 20 );
@@ -46,7 +46,7 @@ public class LinkedListTest {
   }
 
   @Test
-  void testGetFirstAndLast ( ) {
+  void testGetFirstAndLast () {
     list.addLast ( 5 );
     list.addLast ( 15 );
     assertEquals ( 5 , list.getFirst ( ) );
@@ -54,14 +54,14 @@ public class LinkedListTest {
   }
 
   @Test
-  void testGetByIndex ( ) {
+  void testGetByIndex () {
     list.addLast ( 100 );
     list.addLast ( 200 );
     assertEquals ( 200 , list.get ( 1 ) );
   }
 
   @Test
-  void testRemoveFirst ( ) {
+  void testRemoveFirst () {
     list.addLast ( 1 );
     list.addLast ( 2 );
     int removed = list.removeFirst ( );
@@ -71,7 +71,7 @@ public class LinkedListTest {
   }
 
   @Test
-  void testRemoveLast ( ) {
+  void testRemoveLast () {
     list.addLast ( 1 );
     list.addLast ( 2 );
     int removed = list.removeLast ( );
@@ -81,7 +81,7 @@ public class LinkedListTest {
   }
 
   @Test
-  void testRemoveByIndex ( ) {
+  void testRemoveByIndex () {
     list.addLast ( 10 );
     list.addLast ( 20 );
     list.addLast ( 30 );
@@ -92,17 +92,17 @@ public class LinkedListTest {
   }
 
   @Test
-  void testIndexOutOfBounds ( ) {
-    assertThrows ( IndexOutOfBoundsException.class , ( ) -> list.get ( 0 ) );
-    assertThrows ( IndexOutOfBoundsException.class , ( ) -> list.add ( 1 , 5 ) );
-    assertThrows ( IndexOutOfBoundsException.class , ( ) -> list.remove ( 0 ) );
+  void testIndexOutOfBounds () {
+    assertThrows ( IndexOutOfBoundsException.class , () -> list.get ( 0 ) );
+    assertThrows ( IndexOutOfBoundsException.class , () -> list.add ( 1 , 5 ) );
+    assertThrows ( IndexOutOfBoundsException.class , () -> list.remove ( 0 ) );
   }
 
   @Test
-  void testEmptyListExceptions ( ) {
-    assertThrows ( IllegalStateException.class , ( ) -> list.getFirst ( ) );
-    assertThrows ( IllegalStateException.class , ( ) -> list.getLast ( ) );
-    assertThrows ( IllegalStateException.class , ( ) -> list.removeFirst ( ) );
-    assertThrows ( IllegalStateException.class , ( ) -> list.removeLast ( ) );
+  void testEmptyListExceptions () {
+    assertThrows ( IllegalStateException.class , () -> list.getFirst ( ) );
+    assertThrows ( IllegalStateException.class , () -> list.getLast ( ) );
+    assertThrows ( IllegalStateException.class , () -> list.removeFirst ( ) );
+    assertThrows ( IllegalStateException.class , () -> list.removeLast ( ) );
   }
 }

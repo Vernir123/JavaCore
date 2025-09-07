@@ -6,21 +6,21 @@ public class LinkedList< T > {
   private Node tail;
   private int size = 0;
 
-  public int size ( ) {
+  public int size () {
     return size;
   }
 
-  public void addFirst ( T data ) {
+  public void addFirst (T data) {
     Node newNode = new Node ( data );
     newNode.next = head;
     head = newNode;
-      if (tail == null) {
-          tail = head;
-      }
+    if (tail == null) {
+      tail = head;
+    }
     size++;
   }
 
-  public void addLast ( T data ) {
+  public void addLast (T data) {
     Node newNode = new Node ( data );
     if (tail == null) {
       head = tail = newNode;
@@ -31,10 +31,10 @@ public class LinkedList< T > {
     size++;
   }
 
-  public void add ( int index , T data ) {
-      if (index < 0 || index > size) {
-          throw new IndexOutOfBoundsException ( "invalid index" );
-      }
+  public void add (int index , T data) {
+    if (index < 0 || index > size) {
+      throw new IndexOutOfBoundsException ( "invalid index" );
+    }
     if (index == 0) {
       addFirst ( data );
       return;
@@ -54,24 +54,24 @@ public class LinkedList< T > {
     size++;
   }
 
-  public T getFirst ( ) {
-      if (head == null) {
-          throw new IllegalStateException ( "List is empty" );
-      }
+  public T getFirst () {
+    if (head == null) {
+      throw new IllegalStateException ( "List is empty" );
+    }
     return head.value;
   }
 
-  public T getLast ( ) {
-      if (tail == null) {
-          throw new IllegalStateException ( "List is empty" );
-      }
+  public T getLast () {
+    if (tail == null) {
+      throw new IllegalStateException ( "List is empty" );
+    }
     return tail.value;
   }
 
-  public T get ( int index ) {
-      if (index < 0 || index >= size) {
-          throw new IndexOutOfBoundsException ( "invalid index" );
-      }
+  public T get (int index) {
+    if (index < 0 || index >= size) {
+      throw new IndexOutOfBoundsException ( "invalid index" );
+    }
     Node current = head;
     for ( int i = 0; i < index; i++ ) {
       current = current.next;
@@ -79,26 +79,26 @@ public class LinkedList< T > {
     return current.value;
   }
 
-  public T removeFirst ( ) {
-      if (head == null) {
-          throw new IllegalStateException ( "List is empty" );
-      }
+  public T removeFirst () {
+    if (head == null) {
+      throw new IllegalStateException ( "List is empty" );
+    }
     T value = head.value;
     head = head.next;
-      if (head == null) {
-          tail = null;
-      }
+    if (head == null) {
+      tail = null;
+    }
     size--;
     return value;
   }
 
-  public T removeLast ( ) {
-      if (tail == null) {
-          throw new IllegalStateException ( "List is empty" );
-      }
-      if (size == 1) {
-          return removeFirst ( );
-      }
+  public T removeLast () {
+    if (tail == null) {
+      throw new IllegalStateException ( "List is empty" );
+    }
+    if (size == 1) {
+      return removeFirst ( );
+    }
 
     Node current = head;
     while (current.next != tail) {
@@ -111,16 +111,16 @@ public class LinkedList< T > {
     return value;
   }
 
-  public T remove ( int index ) {
-      if (index < 0 || index >= size) {
-          throw new IndexOutOfBoundsException ( "invalid index" );
-      }
-      if (index == 0) {
-          return removeFirst ( );
-      }
-      if (index == size - 1) {
-          return removeLast ( );
-      }
+  public T remove (int index) {
+    if (index < 0 || index >= size) {
+      throw new IndexOutOfBoundsException ( "invalid index" );
+    }
+    if (index == 0) {
+      return removeFirst ( );
+    }
+    if (index == size - 1) {
+      return removeLast ( );
+    }
 
     Node current = head;
     for ( int i = 0; i < index - 1; i++ ) {
@@ -137,7 +137,7 @@ public class LinkedList< T > {
     T value;
     Node next;
 
-    Node ( T value ) {
+    Node (T value) {
       this.value = value;
     }
   }
