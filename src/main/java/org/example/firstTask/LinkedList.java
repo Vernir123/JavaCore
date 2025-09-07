@@ -1,9 +1,9 @@
 package org.example.firstTask;
 
-public class LinkedList< T > {
+public class LinkedList<T> {
 
-  private Node head;
-  private Node tail;
+  private Node<T> head;
+  private Node<T> tail;
   private int size = 0;
 
   public int size () {
@@ -11,7 +11,7 @@ public class LinkedList< T > {
   }
 
   public void addFirst (T data) {
-    Node newNode = new Node ( data );
+    Node<T> newNode = new Node<> ( data );
     newNode.next = head;
     head = newNode;
     if (tail == null) {
@@ -21,7 +21,7 @@ public class LinkedList< T > {
   }
 
   public void addLast (T data) {
-    Node newNode = new Node ( data );
+    Node<T> newNode = new Node<> ( data );
     if (tail == null) {
       head = tail = newNode;
     } else {
@@ -44,8 +44,8 @@ public class LinkedList< T > {
       return;
     }
 
-    Node newNode = new Node ( data );
-    Node current = head;
+    Node<T> newNode = new Node<> ( data );
+    Node<T> current = head;
     for ( int i = 0; i < index - 1; i++ ) {
       current = current.next;
     }
@@ -72,7 +72,7 @@ public class LinkedList< T > {
     if (index < 0 || index >= size) {
       throw new IndexOutOfBoundsException ( "invalid index" );
     }
-    Node current = head;
+    Node<T> current = head;
     for ( int i = 0; i < index; i++ ) {
       current = current.next;
     }
@@ -100,7 +100,7 @@ public class LinkedList< T > {
       return removeFirst ( );
     }
 
-    Node current = head;
+    Node<T> current = head;
     while (current.next != tail) {
       current = current.next;
     }
@@ -122,7 +122,7 @@ public class LinkedList< T > {
       return removeLast ( );
     }
 
-    Node current = head;
+    Node<T> current = head;
     for ( int i = 0; i < index - 1; i++ ) {
       current = current.next;
     }
@@ -132,12 +132,12 @@ public class LinkedList< T > {
     return value;
   }
 
-  private class Node {
+  private class Node <U> {
 
-    T value;
-    Node next;
+    U value;
+    Node<U> next;
 
-    Node (T value) {
+    Node (U value) {
       this.value = value;
     }
   }
