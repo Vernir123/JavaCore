@@ -1,5 +1,6 @@
 import org.example.firstTask.LinkedList;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,6 +15,7 @@ public class LinkedListTest {
   }
 
   @Test
+  @DisplayName ("Size")
   void testSize () {
     list.addLast ( 10 );
     list.addLast ( 20 );
@@ -22,6 +24,7 @@ public class LinkedListTest {
   }
 
   @Test
+  @DisplayName ("Add first")
   void testAddFirst () {
     list.addFirst ( 10 );
     assertEquals ( 1 , list.size ( ) );
@@ -29,6 +32,7 @@ public class LinkedListTest {
   }
 
   @Test
+  @DisplayName ("Add last")
   void testAddLast () {
     list.addLast ( 20 );
     list.addLast ( null );
@@ -37,6 +41,7 @@ public class LinkedListTest {
   }
 
   @Test
+  @DisplayName ("Add by index")
   void testAddByIndex () {
     list.addFirst ( 10 );
     list.addLast ( 30 );
@@ -46,6 +51,7 @@ public class LinkedListTest {
   }
 
   @Test
+  @DisplayName ("Get first and last")
   void testGetFirstAndLast () {
     list.addLast ( 5 );
     list.addLast ( 15 );
@@ -54,6 +60,7 @@ public class LinkedListTest {
   }
 
   @Test
+  @DisplayName ("Get by index")
   void testGetByIndex () {
     list.addLast ( 100 );
     list.addLast ( 200 );
@@ -61,6 +68,7 @@ public class LinkedListTest {
   }
 
   @Test
+  @DisplayName ("Remove first")
   void testRemoveFirst () {
     list.addLast ( 1 );
     list.addLast ( 2 );
@@ -71,6 +79,7 @@ public class LinkedListTest {
   }
 
   @Test
+  @DisplayName ("Remove last")
   void testRemoveLast () {
     list.addLast ( 1 );
     list.addLast ( 2 );
@@ -81,6 +90,7 @@ public class LinkedListTest {
   }
 
   @Test
+  @DisplayName ("Remove by index")
   void testRemoveByIndex () {
     list.addLast ( 10 );
     list.addLast ( 20 );
@@ -92,6 +102,7 @@ public class LinkedListTest {
   }
 
   @Test
+  @DisplayName ("Index out of bounds")
   void testIndexOutOfBounds () {
     assertThrows ( IndexOutOfBoundsException.class , () -> list.get ( 0 ) );
     assertThrows ( IndexOutOfBoundsException.class , () -> list.add ( 1 , 5 ) );
@@ -99,6 +110,7 @@ public class LinkedListTest {
   }
 
   @Test
+  @DisplayName ("Empty list exceptions")
   void testEmptyListExceptions () {
     assertThrows ( IllegalStateException.class , () -> list.getFirst ( ) );
     assertThrows ( IllegalStateException.class , () -> list.getLast ( ) );
