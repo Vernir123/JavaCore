@@ -5,78 +5,85 @@ import java.util.Map;
 
 public class Faction implements Runnable {
 
-  private final Map < RobotPart, Integer > partsInventory = new EnumMap <> ( RobotPart.class );
+  private final Map <RobotPart, Integer> partsInventory = new EnumMap <>(RobotPart.class);
   private final String name;
   private int partsCollected = 0;
   private int robots = 0;
 
-  // constructor for setting faction name and initializing EnumMap
-  public Faction ( String name ) {
+  public Faction (String name) {
     this.name = name;
-    init ( );
+    init();
   }
 
-  private void init ( ) {
-    for ( RobotPart type : RobotPart.values ( ) ) {
-      partsInventory.put ( type , 0 );
+  private void init () {
+    for (RobotPart type : RobotPart.values()) {
+      partsInventory.put(type , 0);
     }
-    System.out.println ( name + " Faction is initialized!" );
+    System.out.println(name + " Faction is initialized!");
   }
 
-  // method for retrieving amount of robots
-  public int getRobotsAmount ( ) {
+  public int getRobotsAmount () {
     return robots;
   }
 
   @Override
-  public void run ( ) {
+  public void run () {
     while (Skynet.day <= Skynet.DAY_LIMIT) {
-      synchronized (Skynet.lock) {
-        while (Skynet.isDay) {
-          try {
-            Skynet.lock.wait ( );
-          } catch (InterruptedException e) {
-            return;
-          }
-        }
-      }
+      waitForFactory();
+      collectPart();
+      createRobot();
+      finishDay();
+    }
+  }
 
-      while (partsCollected < 5 && !Factory.isEmpty ( )) {
-        RobotPart partTaken = Factory.capturePart ( );
-        if (partTaken != null) {
-          partsInventory.put ( partTaken , partsInventory.get ( partTaken ) + 1 );
-          partsCollected++;
-        }
-      }
-
-      createRobot ( );
-      System.out.println ( name + " Faction current parts: " + partsInventory + ". " + name
-          + " faction current robots: " + robots );
-      partsCollected = 0;
-      synchronized (Skynet.lock) {
-        Skynet.factionsFinished++;
-        if (Skynet.factionsFinished == 2) {
-          Skynet.isDay = true;
-          Skynet.day++;
-          System.out.println ( "Day is done!" );
-          Skynet.lock.notifyAll ( );
-        } else {
-          try {
-            Skynet.lock.wait ( );
-          } catch (InterruptedException e) {
-            return;
-          }
+  private void waitForFactory () {
+    synchronized (Skynet.LOCK) {
+      while (Skynet.isDay) {
+        try {
+          Skynet.LOCK.wait();
+        } catch (InterruptedException e) {
+          return;
         }
       }
     }
   }
 
-  // loop for creating robots from all available parts packs (1 of each part)
-  private synchronized void createRobot ( ) {
-    while (partsInventory.entrySet ( ).stream ( ).allMatch ( entry -> entry.getValue ( ) >= 1 )) {
-      partsInventory.entrySet ( ).forEach ( entry -> entry.setValue ( entry.getValue ( ) - 1 ) );
+  private void finishDay () {
+    partsCollected = 0;
+    synchronized (Skynet.LOCK) {
+      Skynet.factionsFinished++;
+      if (Skynet.factionsFinished == 2) {
+        Skynet.isDay = true;
+        Skynet.day++;
+        System.out.println("Day is done!");
+        Skynet.LOCK.notifyAll();
+      } else {
+        try {
+          Skynet.LOCK.wait();
+        } catch (InterruptedException _) {
+        }
+      }
+    }
+  }
+
+  private void collectPart () {
+    int MAX_PARTS_COLLECT = 5;
+    while (partsCollected < MAX_PARTS_COLLECT && !Factory.isEmpty()) {
+      RobotPart partTaken = Factory.capturePart();
+      if (partTaken != null) {
+        partsInventory.put(partTaken , partsInventory.get(partTaken) + 1);
+        partsCollected++;
+      }
+    }
+  }
+
+  private void createRobot () {
+    while (partsInventory.entrySet().stream().allMatch(entry -> entry.getValue() >= 1)) {
+      partsInventory.entrySet().forEach(entry -> entry.setValue(entry.getValue() - 1));
       robots++;
     }
+    System.out.println(name + " Faction current parts: " + partsInventory + ". " + name
+        + " faction current robots: " + robots);
   }
 }
 

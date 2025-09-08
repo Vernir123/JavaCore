@@ -5,75 +5,84 @@ import java.util.Random;
 
 public class Factory {
 
-  private static final EnumMap < RobotPart, Integer > partsManufactured = new EnumMap <> (
-      RobotPart.class );
-  private static final Random rand = new Random ( );
+  private static final EnumMap <RobotPart, Integer> partsManufactured = new EnumMap <>(
+      RobotPart.class);
+  private static final Random rand = new Random();
   private static final int MAX_MANUFACTURED = 10;
 
-  //initializing EnumMap
   static {
-    for ( RobotPart type : RobotPart.values ( ) ) {
-      partsManufactured.put ( type , 0 );
+    for (RobotPart type : RobotPart.values()) {
+      partsManufactured.put(type , 0);
     }
-    System.out.println ( "Factory is working!" );
+    System.out.println("Factory is working!");
   }
 
 
-  public static void run ( ) {
+  public static void run () {
     while (Skynet.day < Skynet.DAY_LIMIT) {
-      synchronized (Skynet.lock) {
-        while (!Skynet.isDay) {
-          try {
-            Skynet.lock.wait ( );
-          } catch (InterruptedException e) {
-            return;
-          }
+      waitForFactions();
+      startFactory();
+      finishWork();
+    }
+  }
+
+  private static void waitForFactions () {
+    synchronized (Skynet.LOCK) {
+      while (!Skynet.isDay) {
+        try {
+          Skynet.LOCK.wait();
+        } catch (InterruptedException e) {
+          return;
         }
       }
-
-      System.out.println ( "+++++++++++++++++++++++++" );
-      System.out.println ( "Day " + Skynet.day + " started!" );
-      System.out.println ( "+++++++++++++++++++++++++" );
-
-      int partsToday = rand.nextInt ( MAX_MANUFACTURED + 1 );
-      System.out.println ( "Factory manufacturing |" + partsToday + "| parts..." );
-      for ( int i = partsToday; i > 0; i-- ) {
-        producePart ( );
-      }
-      System.out.println ( "Factory manufacturing parts done!" );
-      System.out.println ( "Day: " + Skynet.day + " Manufactured parts: " + partsManufactured );
-      System.out.println ( "----------------------" );
-
-      synchronized (Skynet.lock) {
-        Skynet.factionsFinished = 0;
-        Skynet.isDay = false;
-        Skynet.lock.notifyAll ( );
-      }
     }
   }
 
-  // method creating random parts based on RobotParts enum
-  private static synchronized void producePart ( ) {
-    int partRand = rand.nextInt ( RobotPart.values ( ).length );
-    RobotPart part = RobotPart.values ( )[partRand];
-    partsManufactured.put ( part , partsManufactured.get ( part ) + 1 );
+  private static void startFactory () {
+    System.out.println("+++++++++++++++++++++++++");
+    System.out.println("Day " + Skynet.day + " started!");
+    System.out.println("+++++++++++++++++++++++++");
+
+    int partsToday = rand.nextInt(MAX_MANUFACTURED + 1);
+
+    System.out.println("Factory manufacturing |" + partsToday + "| parts...");
+
+    for (int i = partsToday; i > 0; i--) {
+      producePart();
+    }
+
+    System.out.println("Factory manufacturing parts done!");
+    System.out.println("Day: " + Skynet.day + " Manufactured parts: " + partsManufactured);
+    System.out.println("----------------------");
   }
 
-  // method for checking availability of parts in factory
-  public static synchronized boolean isEmpty ( ) {
-    return partsManufactured.entrySet ( ).stream ( ).allMatch ( e -> e.getValue ( ) == 0 );
+  private static void finishWork () {
+    synchronized (Skynet.LOCK) {
+      Skynet.LOCK.notifyAll();
+      Skynet.factionsFinished = 0;
+      Skynet.isDay = false;
+    }
   }
 
-  // method for subtract parts from factory inventory and return its type
-  public static synchronized RobotPart capturePart ( ) {
-    if (isEmpty ( )) {
+  private static void producePart () {
+    int partRand = rand.nextInt(RobotPart.values().length);
+    RobotPart part = RobotPart.values()[partRand];
+    partsManufactured.put(part , partsManufactured.get(part) + 1);
+  }
+
+  public static boolean isEmpty () {
+    return partsManufactured.entrySet().stream().allMatch(e -> e.getValue() == 0);
+  }
+
+  public static synchronized RobotPart capturePart () {
+    if (isEmpty()) {
       return null;
     }
     RobotPart type;
     do {
-      type = RobotPart.values ( )[rand.nextInt ( RobotPart.values ( ).length )];
-    } while (partsManufactured.get ( type ) == 0);
-    partsManufactured.put ( type , partsManufactured.get ( type ) - 1 );
+      type = RobotPart.values()[rand.nextInt(RobotPart.values().length)];
+    } while (partsManufactured.get(type) == 0);
+    partsManufactured.put(type , partsManufactured.get(type) - 1);
     return type;
 
 
