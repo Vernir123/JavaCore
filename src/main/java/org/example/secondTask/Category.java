@@ -1,5 +1,5 @@
 package org.example.secondTask;
 
-enum Category {
+public enum Category {
   ELECTRONICS, CLOTHING, BOOKS, HOME, BEAUTY, TOYS
 }
