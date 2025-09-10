@@ -17,20 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OrderMetricsTest {
 
-  // Unique Cities
-  private List <Order> orderList1;
-
-  // Total income of completed (Delivered) orders
-  private List <Order> orderList2;
-
-  // Most popular product (OrderItem)
-  private List <Order> orderList3;
-
-  //  Average check for successfully delivered orders
-  private List <Order> orderList4;
-
-  //  Customers who have >5 orders
-  private List <Order> orderList5;
+  private List <Order> orderList1, orderList2, orderList3, orderList4, orderList5;
 
 
   @BeforeEach
@@ -126,24 +113,17 @@ public class OrderMetricsTest {
     Order order30 = new Order("30" , LocalDateTime.now() , customer4 , List.of(orderItem4) ,
         OrderStatus.CANCELLED);
 
-    //London, Saratov, London, Chrzaszczyzewoszyce, London, Saratov, Minsk
     orderList1 = List.of(order1 , order2 , order3 , order10 , order13 , order14 , order19);
 
-    // completed: 2, 5, 12
-    // costs: 5.5+20.19, 1499.99, 12.49
-    // sum: 1538,17
     orderList2 = List.of(order1 , order2 , order3 , order5 , order6 , order7 , order8 , order12);
 
-    // 6, 6, 3, 2, 2, 1
     orderList3 = List.of(order1 , order2 , order3 , order4 , order5 , order6 , order7 , order8 ,
         order9 , order10 , order11);
 
-    // average check for delivered(7) orders =  865.4757142857143; full cost = 6058.33
     List <Order> extraList = List.of(order12 , order13 , order14 , order15 , order16 , order17 ,
         order18 , order19 , order20 , order21 , order22);
     orderList4 = Stream.concat(orderList3.stream() , extraList.stream()).toList();
 
-    // customer1 = 8, customer2 = 8; customer3 = 5
     List <Order> extraList2 = List.of(order23 , order24 , order25 , order26 , order27 , order28 ,
         order29 , order30);
     orderList5 = Stream.concat(orderList4.stream() , extraList2.stream()).toList();
